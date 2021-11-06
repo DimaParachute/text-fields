@@ -13,6 +13,16 @@
 		F3152DD5272ABF3B00DAE1F3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F3152DD3272ABF3B00DAE1F3 /* Main.storyboard */; };
 		F3152DD7272ABF3D00DAE1F3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F3152DD6272ABF3D00DAE1F3 /* Assets.xcassets */; };
 		F3152DDA272ABF3D00DAE1F3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F3152DD8272ABF3D00DAE1F3 /* LaunchScreen.storyboard */; };
+		F3152DE2272ACA2900DAE1F3 /* NoDigitsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F3152DE1272ACA2900DAE1F3 /* NoDigitsView.xib */; };
+		F3152DE4272ACAC400DAE1F3 /* NoDigitsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3152DE3272ACAC400DAE1F3 /* NoDigitsVC.swift */; };
+		F3152DE6272B2CA400DAE1F3 /* InputLimitView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F3152DE5272B2CA400DAE1F3 /* InputLimitView.xib */; };
+		F3152DE8272B2E6200DAE1F3 /* InputLimitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3152DE7272B2E6200DAE1F3 /* InputLimitViewController.swift */; };
+		F3152DEA272C2E1C00DAE1F3 /* InputMaskView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F3152DE9272C2E1C00DAE1F3 /* InputMaskView.xib */; };
+		F3152DEC272C2E9D00DAE1F3 /* InputMaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3152DEB272C2E9D00DAE1F3 /* InputMaskViewController.swift */; };
+		F3152DEE272C316A00DAE1F3 /* LinkView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F3152DED272C316A00DAE1F3 /* LinkView.xib */; };
+		F3152DF0272C319E00DAE1F3 /* LinkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3152DEF272C319E00DAE1F3 /* LinkViewController.swift */; };
+		F3152DF2272C335700DAE1F3 /* PasswordView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F3152DF1272C335700DAE1F3 /* PasswordView.xib */; };
+		F3152DF4272C33AE00DAE1F3 /* PasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3152DF3272C33AE00DAE1F3 /* PasswordViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +34,16 @@
 		F3152DD6272ABF3D00DAE1F3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F3152DD9272ABF3D00DAE1F3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F3152DDB272ABF3D00DAE1F3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F3152DE1272ACA2900DAE1F3 /* NoDigitsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NoDigitsView.xib; sourceTree = "<group>"; };
+		F3152DE3272ACAC400DAE1F3 /* NoDigitsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoDigitsVC.swift; sourceTree = "<group>"; };
+		F3152DE5272B2CA400DAE1F3 /* InputLimitView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InputLimitView.xib; sourceTree = "<group>"; };
+		F3152DE7272B2E6200DAE1F3 /* InputLimitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputLimitViewController.swift; sourceTree = "<group>"; };
+		F3152DE9272C2E1C00DAE1F3 /* InputMaskView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InputMaskView.xib; sourceTree = "<group>"; };
+		F3152DEB272C2E9D00DAE1F3 /* InputMaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputMaskViewController.swift; sourceTree = "<group>"; };
+		F3152DED272C316A00DAE1F3 /* LinkView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LinkView.xib; sourceTree = "<group>"; };
+		F3152DEF272C319E00DAE1F3 /* LinkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkViewController.swift; sourceTree = "<group>"; };
+		F3152DF1272C335700DAE1F3 /* PasswordView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PasswordView.xib; sourceTree = "<group>"; };
+		F3152DF3272C33AE00DAE1F3 /* PasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,7 +79,17 @@
 				F3152DCD272ABF3B00DAE1F3 /* AppDelegate.swift */,
 				F3152DCF272ABF3B00DAE1F3 /* SceneDelegate.swift */,
 				F3152DD1272ABF3B00DAE1F3 /* ViewController.swift */,
+				F3152DF1272C335700DAE1F3 /* PasswordView.xib */,
+				F3152DF3272C33AE00DAE1F3 /* PasswordViewController.swift */,
 				F3152DD3272ABF3B00DAE1F3 /* Main.storyboard */,
+				F3152DE1272ACA2900DAE1F3 /* NoDigitsView.xib */,
+				F3152DED272C316A00DAE1F3 /* LinkView.xib */,
+				F3152DEF272C319E00DAE1F3 /* LinkViewController.swift */,
+				F3152DE5272B2CA400DAE1F3 /* InputLimitView.xib */,
+				F3152DE7272B2E6200DAE1F3 /* InputLimitViewController.swift */,
+				F3152DE9272C2E1C00DAE1F3 /* InputMaskView.xib */,
+				F3152DEB272C2E9D00DAE1F3 /* InputMaskViewController.swift */,
+				F3152DE3272ACAC400DAE1F3 /* NoDigitsVC.swift */,
 				F3152DD6272ABF3D00DAE1F3 /* Assets.xcassets */,
 				F3152DD8272ABF3D00DAE1F3 /* LaunchScreen.storyboard */,
 				F3152DDB272ABF3D00DAE1F3 /* Info.plist */,
@@ -125,8 +155,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				F3152DDA272ABF3D00DAE1F3 /* LaunchScreen.storyboard in Resources */,
+				F3152DE6272B2CA400DAE1F3 /* InputLimitView.xib in Resources */,
+				F3152DEE272C316A00DAE1F3 /* LinkView.xib in Resources */,
+				F3152DE2272ACA2900DAE1F3 /* NoDigitsView.xib in Resources */,
+				F3152DEA272C2E1C00DAE1F3 /* InputMaskView.xib in Resources */,
 				F3152DD7272ABF3D00DAE1F3 /* Assets.xcassets in Resources */,
 				F3152DD5272ABF3B00DAE1F3 /* Main.storyboard in Resources */,
+				F3152DF2272C335700DAE1F3 /* PasswordView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,7 +173,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				F3152DD2272ABF3B00DAE1F3 /* ViewController.swift in Sources */,
+				F3152DF4272C33AE00DAE1F3 /* PasswordViewController.swift in Sources */,
+				F3152DEC272C2E9D00DAE1F3 /* InputMaskViewController.swift in Sources */,
+				F3152DE4272ACAC400DAE1F3 /* NoDigitsVC.swift in Sources */,
+				F3152DF0272C319E00DAE1F3 /* LinkViewController.swift in Sources */,
 				F3152DCE272ABF3B00DAE1F3 /* AppDelegate.swift in Sources */,
+				F3152DE8272B2E6200DAE1F3 /* InputLimitViewController.swift in Sources */,
 				F3152DD0272ABF3B00DAE1F3 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -295,7 +335,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "DimaParachute.Text-Fields";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -313,7 +353,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "DimaParachute.Text-Fields";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
