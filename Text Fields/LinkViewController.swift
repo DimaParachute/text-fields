@@ -8,6 +8,5 @@
 import UIKit
 
 class LinkViewController: UIViewController {
-    @IBOutlet var linkView: UIView!
     @IBOutlet weak var linkTextField: UITextField!
 }

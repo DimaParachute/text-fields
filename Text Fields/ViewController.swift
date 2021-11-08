@@ -36,6 +36,7 @@ class ViewController: UIViewController, UITextFieldDelegate, SFSafariViewControl
     private var counterForUppercased = 0
     
     // MARK: - IBOutlets
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var noDigitsContainerView: UIView!
     @IBOutlet weak var inputLimitContainerView: UIView!
     @IBOutlet weak var inputMaskContainerView: UIView!
@@ -70,6 +71,32 @@ class ViewController: UIViewController, UITextFieldDelegate, SFSafariViewControl
         linkViewController.linkTextField.delegate = self
         passwordViewController.passwordTextField.delegate = self
         
+        registerForKeyboardNotifications()
+        
+    }
+    
+    deinit {
+        removeKeyboardNotification()
+    }
+    
+    func registerForKeyboardNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(kbWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(kbWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    func removeKeyboardNotification() {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc func kbWillShow(_ notification: Notification) {
+        let userInfo = notification.userInfo
+        let kbFrameSize = (userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        scrollView.contentOffset = CGPoint(x: 0, y: kbFrameSize.height)
+    }
+    
+    @objc func kbWillHide() {
+        scrollView.contentOffset = CGPoint.zero
     }
     
     //MARK: - textFieldDelegate
@@ -110,8 +137,7 @@ class ViewController: UIViewController, UITextFieldDelegate, SFSafariViewControl
         if textField == inputMaskViewController.inputMaskTextField {
             if (textField.text?.count)! <= 5 {
                 if (textField.text?.count)! == 4 {
-                    timer?.invalidate()
-                    timer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(putADash), userInfo: nil, repeats: false)
+                    perform(#selector(putADash), with: nil, afterDelay: 0.1)
                 }
                 let allowedCharacters = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz"
                 let allowedCharacterSet = CharacterSet(charactersIn: allowedCharacters)
@@ -129,17 +155,19 @@ class ViewController: UIViewController, UITextFieldDelegate, SFSafariViewControl
         
         //MARK: - link logic
         if textField == linkViewController.linkTextField {
-            timer?.invalidate()
-            timer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(showSafariVC), userInfo: nil, repeats: false)
+            while linkViewController.linkTextField.text!.prefix(7) == "http://" || linkViewController.linkTextField.text!.prefix(8) == "https://" {
+                timer?.invalidate()
+                timer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(showSafariVC), userInfo: nil, repeats: false)
+                return true
+            }
         }
         
         //MARK: - password logic
         if textField == passwordViewController.passwordTextField {
-            timer?.invalidate()
-            timer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(passwordSecondCheck), userInfo: nil, repeats: false)
-            timer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(passwordFirstCheck), userInfo: nil, repeats: false)
-            timer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(passwordThirdCheck), userInfo: nil, repeats: false)
-            timer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(passwordFourthCheck), userInfo: nil, repeats: false)
+            perform(#selector(passwordSecondCheck), with: nil, afterDelay: 0.1)
+            perform(#selector(passwordFirstCheck), with: nil, afterDelay: 0.1)
+            perform(#selector(passwordThirdCheck), with: nil, afterDelay: 0.1)
+            perform(#selector(passwordFourthCheck), with: nil, afterDelay: 0.1)
         }
         
         return true

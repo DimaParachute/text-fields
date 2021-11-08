@@ -8,6 +8,5 @@
 import UIKit
 
 class NoDigitsViewController: UIViewController {
-    @IBOutlet var noDigitsView: UIView!
     @IBOutlet weak var noDigitsTextField: UITextField!
 }

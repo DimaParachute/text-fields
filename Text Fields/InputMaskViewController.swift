@@ -8,6 +8,5 @@
 import UIKit
 
 class InputMaskViewController: UIViewController {
-    @IBOutlet var inputMaskView: UIView!
     @IBOutlet weak var inputMaskTextField: UITextField!
 }

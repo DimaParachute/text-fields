@@ -8,8 +8,5 @@
 import UIKit
 
 class PasswordViewController: UIViewController {
-    
-    @IBOutlet var PasswordView: UIView!
     @IBOutlet weak var passwordTextField: UITextField!
-    
 }

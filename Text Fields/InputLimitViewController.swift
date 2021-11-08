@@ -8,6 +8,5 @@
 import UIKit
 
 class InputLimitViewController: UIViewController {
-    @IBOutlet var inputLimitView: UIView!
     @IBOutlet weak var inputLimitTextField: UITextField!
 }
