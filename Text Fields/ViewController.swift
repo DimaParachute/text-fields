@@ -102,6 +102,11 @@ class ViewController: UIViewController, UITextFieldDelegate, SFSafariViewControl
     //MARK: - textFieldDelegate
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.view.endEditing(true)
+        if textField == linkViewController.linkTextField {
+            if linkViewController.linkTextField.text!.prefix(7) == "http://" || linkViewController.linkTextField.text!.prefix(8) == "https://" {
+                showSafariVC()
+            }
+        }
         return false
     }
     
@@ -153,15 +158,6 @@ class ViewController: UIViewController, UITextFieldDelegate, SFSafariViewControl
             }
         }
         
-        //MARK: - link logic
-        if textField == linkViewController.linkTextField {
-            while linkViewController.linkTextField.text!.prefix(7) == "http://" || linkViewController.linkTextField.text!.prefix(8) == "https://" {
-                timer?.invalidate()
-                timer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(showSafariVC), userInfo: nil, repeats: false)
-                return true
-            }
-        }
-        
         //MARK: - password logic
         if textField == passwordViewController.passwordTextField {
             perform(#selector(passwordSecondCheck), with: nil, afterDelay: 0.1)
@@ -177,7 +173,7 @@ class ViewController: UIViewController, UITextFieldDelegate, SFSafariViewControl
         inputMaskViewController.inputMaskTextField.text = "\(inputMaskViewController.inputMaskTextField.text!)-"
     }
     
-    @objc func showSafariVC() {
+    func showSafariVC() {
         guard let url = URL(string: linkViewController.linkTextField.text!) else {
             return
         }
