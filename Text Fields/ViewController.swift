@@ -10,30 +10,30 @@ import UIKit
 
 class ViewController: UIViewController, UITextFieldDelegate, SFSafariViewControllerDelegate {
     
+//--------------------------------------------------------------------------
+    
     //MARK: - Creating class instances
     private let noDigitsViewController = NoDigitsViewController()
     private let inputLimitViewController = InputLimitViewController()
     private let inputMaskViewController = InputMaskViewController()
     private let linkViewController = LinkViewController()
     private let passwordViewController = PasswordViewController()
+    private let passwordRuleChecker = PasswordRuleChecker()
+    private let inputMaskChecker = InputMaskChecker()
+    private let urlValidation = URLValidation()
     
-    //MARK: - Standart values
+    //MARK: - Default values
     private let inputLimitNumber = 10
     private var timer: Timer?
-    private let passwordFirstRuleNotChecked = "☑️ minimum of 8 characters."
-    private let passwordFirstRuleChecked = "✅ minimum of 8 characters."
-    private let passwordSecondRuleNotChecked = "☑️ minimum 1 digit."
-    private let passwordSecondRuleChecked = "✅ minimum 1 digit."
-    private let passwordThirdRuleNotChecked = "☑️ minimum 1 lowercased."
-    private let passwordThirdRuleChecked = "✅ minimum 1 lowercased."
-    private let passwordFourthRuleNotChecked = "☑️ minimum 1 uppercased."
-    private let passwordFourthRuleChecked = "✅ minimum 1 uppercased."
-    private let digits = Array("0123456789")
-    private let lowercasedCharacters = Array("abcdefghijklmnopqrstuvwxyz")
-    private let uppercasedCharacters = Array("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
-    private var counterForDigits = 0
-    private var counterForLowercased = 0
-    private var counterForUppercased = 0
+    private let dashIndex = 5
+    let passwordMinLengthRuleNotChecked = "☑️ minimum of 8 characters."
+    let passwordMinLengthRuleChecked = "✅ minimum of 8 characters."
+    let passwordDigitRuleNotChecked = "☑️ minimum 1 digit."
+    let passwordDigitRuleChecked = "✅ minimum 1 digit."
+    let passwordLowercasedRuleNotChecked = "☑️ minimum 1 lowercased."
+    let passwordLowercasedRuleChecked = "✅ minimum 1 lowercased."
+    let passwordUppercasedRuleNotChecked = "☑️ minimum 1 uppercased."
+    let passwordUppercasedRuleChecked = "✅ minimum 1 uppercased."
     
     // MARK: - IBOutlets
     @IBOutlet weak var scrollView: UIScrollView!
@@ -43,20 +43,23 @@ class ViewController: UIViewController, UITextFieldDelegate, SFSafariViewControl
     @IBOutlet weak var linkContainerView: UIView!
     @IBOutlet weak var passwordContainerView: UIView!
     @IBOutlet weak var inputLimitLabel: UILabel!
-    @IBOutlet weak var passwordFirstRuleLabel: UILabel!
-    @IBOutlet weak var passwordSecondRuleLabel: UILabel!
-    @IBOutlet weak var passwordThirdRuleLabel: UILabel!
-    @IBOutlet weak var passwordFourthRuleLabel: UILabel!
+    @IBOutlet weak var passwordMinLengthRuleLabel: UILabel!
+    @IBOutlet weak var passwordDigitRuleLabel: UILabel!
+    @IBOutlet weak var passwordLowercasedRuleLabel: UILabel!
+    @IBOutlet weak var passwordUppercasedRuleLabel: UILabel!
+    
+//--------------------------------------------------------------------------
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         inputLimitLabel.text = String(inputLimitNumber)
         
-        passwordFirstRuleLabel.text = passwordFirstRuleNotChecked
-        passwordSecondRuleLabel.text = passwordSecondRuleNotChecked
-        passwordThirdRuleLabel.text = passwordThirdRuleNotChecked
-        passwordFourthRuleLabel.text = passwordFourthRuleNotChecked
+        passwordMinLengthRuleLabel.text = passwordMinLengthRuleNotChecked
+        passwordDigitRuleLabel.text = passwordDigitRuleNotChecked
+        passwordLowercasedRuleLabel.text = passwordLowercasedRuleNotChecked
+        passwordUppercasedRuleLabel.text = passwordUppercasedRuleNotChecked
+        
         
         // MARK: - Adding subviews
         self.noDigitsContainerView.addSubview(noDigitsViewController.view)
@@ -75,10 +78,13 @@ class ViewController: UIViewController, UITextFieldDelegate, SFSafariViewControl
         
     }
     
+//--------------------------------------------------------------------------
+    
     deinit {
         removeKeyboardNotification()
     }
     
+    //Methods that make keyboard interact with UIScrollView
     func registerForKeyboardNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(kbWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(kbWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -99,11 +105,13 @@ class ViewController: UIViewController, UITextFieldDelegate, SFSafariViewControl
         scrollView.contentOffset = CGPoint.zero
     }
     
+//--------------------------------------------------------------------------
+    
     //MARK: - textFieldDelegate
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.view.endEditing(true)
         if textField == linkViewController.linkTextField {
-            if linkViewController.linkTextField.text!.prefix(7) == "http://" || linkViewController.linkTextField.text!.prefix(8) == "https://" {
+            if urlValidation.urlIsValidated(linkViewController.linkTextField.text!) {
                 showSafariVC()
             }
         }
@@ -114,14 +122,7 @@ class ViewController: UIViewController, UITextFieldDelegate, SFSafariViewControl
         
         //MARK: - noDigits logic
         if textField == noDigitsViewController.noDigitsTextField {
-            let notAllowedCharacters = "0123456789"
-            let notAllowedCharacterSet = CharacterSet(charactersIn: notAllowedCharacters)
-            let typedCharacterSet = CharacterSet(charactersIn: string)
-            if typedCharacterSet.isEmpty == false {
-                if notAllowedCharacterSet.isSuperset(of: typedCharacterSet) == true {
-                    return false
-                }
-            }
+            return digitFilter(string: string)
         }
         
         //MARK: - inputLimit logic
@@ -139,40 +140,73 @@ class ViewController: UIViewController, UITextFieldDelegate, SFSafariViewControl
         }
         
         //MARK: - inputMask logic
-        if textField == inputMaskViewController.inputMaskTextField {
-            if (textField.text?.count)! <= 5 {
-                if (textField.text?.count)! == 4 {
-                    perform(#selector(putADash), with: nil, afterDelay: 0.1)
-                }
-                let allowedCharacters = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz"
-                let allowedCharacterSet = CharacterSet(charactersIn: allowedCharacters)
-                let typedCharacterSet = CharacterSet(charactersIn: string)
-                return allowedCharacterSet.isSuperset(of: typedCharacterSet)
-            } else if (textField.text?.count)! >= 6 && (textField.text?.count)! <= 10 {
-                let allowedCharacters = "0123456789"
-                let allowedCharacterSet = CharacterSet(charactersIn: allowedCharacters)
-                let typedCharacterSet = CharacterSet(charactersIn: string)
-                return allowedCharacterSet.isSuperset(of: typedCharacterSet)
-            } else if (textField.text?.count)! > 10 {
-                return false
+        if textField == inputMaskViewController.inputMaskTextField && string.isEmpty == false {
+            if inputMaskViewController.inputMaskTextField.text!.count == dashIndex {
+                putADash()
             }
+            return inputMaskChecker.inputMaskRulesFollowed(inputCharacter: string, sourceString: textField.text!)
         }
         
         //MARK: - password logic
         if textField == passwordViewController.passwordTextField {
-            perform(#selector(passwordSecondCheck), with: nil, afterDelay: 0.1)
-            perform(#selector(passwordFirstCheck), with: nil, afterDelay: 0.1)
-            perform(#selector(passwordThirdCheck), with: nil, afterDelay: 0.1)
-            perform(#selector(passwordFourthCheck), with: nil, afterDelay: 0.1)
+            perform(#selector(passwordRulesCheckedOrNot), with: nil, afterDelay: 0.1)
         }
         
         return true
     }
 
+//--------------------------------------------------------------------------
+    
+    //Method that contains every password rule methods and changes the text when any rule checked
+    @objc func passwordRulesCheckedOrNot() {
+        if passwordRuleChecker.minLengthRuleFollowed(string: passwordViewController.passwordTextField.text!) == true {
+            passwordMinLengthRuleLabel.text = passwordMinLengthRuleChecked
+            passwordMinLengthRuleLabel.textColor = UIColor.systemGreen
+        } else {
+            passwordMinLengthRuleLabel.text = passwordMinLengthRuleNotChecked
+            passwordMinLengthRuleLabel.textColor = UIColor.darkGray
+        }
+        if passwordRuleChecker.atLeastOneDigitRuleFollowed(string: passwordViewController.passwordTextField.text!) == true {
+            passwordDigitRuleLabel.text = passwordDigitRuleChecked
+            passwordDigitRuleLabel.textColor = UIColor.systemGreen
+        } else {
+            passwordDigitRuleLabel.text = passwordDigitRuleNotChecked
+            passwordDigitRuleLabel.textColor = UIColor.darkGray
+        }
+        if passwordRuleChecker.atLeastOneLowercasedRuleFollowed(string: passwordViewController.passwordTextField.text!) == true {
+            passwordLowercasedRuleLabel.text = passwordLowercasedRuleChecked
+            passwordLowercasedRuleLabel.textColor = UIColor.systemGreen
+        } else {
+            passwordLowercasedRuleLabel.text = passwordLowercasedRuleNotChecked
+            passwordLowercasedRuleLabel.textColor = UIColor.darkGray
+        }
+        if passwordRuleChecker.atLeastOneUppercasedRuleFollowed(string: passwordViewController.passwordTextField.text!) == true {
+            passwordUppercasedRuleLabel.text = passwordUppercasedRuleChecked
+            passwordUppercasedRuleLabel.textColor = UIColor.systemGreen
+        } else {
+            passwordUppercasedRuleLabel.text = passwordUppercasedRuleNotChecked
+            passwordUppercasedRuleLabel.textColor = UIColor.darkGray
+        }
+    }
+    
+    //We call this method to put a dash into string to separate letters and digits
     @objc func putADash() {
         inputMaskViewController.inputMaskTextField.text = "\(inputMaskViewController.inputMaskTextField.text!)-"
     }
     
+    //Convert string with digits into string without digits for noDigits textField
+    func digitFilter(string: String) -> Bool {
+        let notAllowedCharacterSet = CharacterSet.decimalDigits
+        let typedCharacterSet = CharacterSet(charactersIn: string)
+        if typedCharacterSet.isEmpty == false {
+            if notAllowedCharacterSet.isSuperset(of: typedCharacterSet) == true {
+                return false
+            }
+        }
+        return true
+    }
+    
+    //Link opening in safari method
     func showSafariVC() {
         guard let url = URL(string: linkViewController.linkTextField.text!) else {
             return
@@ -181,67 +215,6 @@ class ViewController: UIViewController, UITextFieldDelegate, SFSafariViewControl
         safariVC.delegate = self
         present(safariVC, animated: true)
     }
-    
-    @objc func passwordFirstCheck() {
-        if (passwordViewController.passwordTextField.text?.count)! >= 8 {
-            passwordFirstRuleLabel.text  = passwordFirstRuleChecked
-            passwordFirstRuleLabel.textColor = UIColor.systemGreen
-        } else {
-            passwordFirstRuleLabel.text = passwordFirstRuleNotChecked
-            passwordFirstRuleLabel.textColor = UIColor.darkGray
-        }
-    }
-    
-    @objc func passwordSecondCheck() {
-        for i in Array(passwordViewController.passwordTextField.text!) {
-            for j in digits {
-                if i == j {
-                    counterForDigits += 1
-                }
-            }
-        }
-        if counterForDigits >= 1 {
-            passwordSecondRuleLabel.text  = passwordSecondRuleChecked
-            passwordSecondRuleLabel.textColor = UIColor.systemGreen
-        } else {
-            passwordSecondRuleLabel.text = passwordSecondRuleNotChecked
-            passwordSecondRuleLabel.textColor = UIColor.darkGray
-        }
-    }
-    
-    @objc func passwordThirdCheck() {
-        for i in Array(passwordViewController.passwordTextField.text!) {
-            for j in lowercasedCharacters {
-                if i == j {
-                    counterForLowercased += 1
-                }
-            }
-        }
-        if counterForLowercased >= 1 {
-            passwordThirdRuleLabel.text  = passwordThirdRuleChecked
-            passwordThirdRuleLabel.textColor = UIColor.systemGreen
-        } else {
-            passwordThirdRuleLabel.text = passwordThirdRuleNotChecked
-            passwordThirdRuleLabel.textColor = UIColor.darkGray
-        }
-    }
-    
-    @objc func passwordFourthCheck() {
-        for i in Array(passwordViewController.passwordTextField.text!) {
-            for j in uppercasedCharacters {
-                if i == j {
-                    counterForUppercased += 1
-                }
-            }
-        }
-        if counterForUppercased >= 1 {
-            passwordFourthRuleLabel.text  = passwordFourthRuleChecked
-            passwordFourthRuleLabel.textColor = UIColor.systemGreen
-        } else {
-            passwordFourthRuleLabel.text = passwordFourthRuleNotChecked
-            passwordFourthRuleLabel.textColor = UIColor.darkGray
-        }
-    }
-    
+
 }
 

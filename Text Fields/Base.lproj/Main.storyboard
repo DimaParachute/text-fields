@@ -52,6 +52,7 @@
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x5E-aD-Xie">
                                                 <rect key="frame" x="356.5" y="161" width="41.5" height="20.5"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="inputLimitLabel"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -217,10 +218,10 @@
                         <outlet property="linkContainerView" destination="ZdV-WB-Xjd" id="E7d-KC-t0c"/>
                         <outlet property="noDigitsContainerView" destination="4zN-lD-cAN" id="zby-hr-KlD"/>
                         <outlet property="passwordContainerView" destination="NEK-5P-aMi" id="jRy-Xa-8rl"/>
-                        <outlet property="passwordFirstRuleLabel" destination="UjQ-pP-uoc" id="zom-0a-IOw"/>
-                        <outlet property="passwordFourthRuleLabel" destination="EuF-w6-gSg" id="SHd-jQ-cOz"/>
-                        <outlet property="passwordSecondRuleLabel" destination="Fec-OM-oIM" id="Lzf-KV-LpG"/>
-                        <outlet property="passwordThirdRuleLabel" destination="0t6-fR-HsI" id="rHh-bV-pvi"/>
+                        <outlet property="passwordDigitRuleLabel" destination="Fec-OM-oIM" id="Lzf-KV-LpG"/>
+                        <outlet property="passwordLowercasedRuleLabel" destination="0t6-fR-HsI" id="rHh-bV-pvi"/>
+                        <outlet property="passwordMinLengthRuleLabel" destination="UjQ-pP-uoc" id="zom-0a-IOw"/>
+                        <outlet property="passwordUppercasedRuleLabel" destination="EuF-w6-gSg" id="SHd-jQ-cOz"/>
                         <outlet property="scrollView" destination="Ixg-ZM-xpY" id="ZsL-l1-gGq"/>
                     </connections>
                 </viewController>
